@@ -4456,15 +4456,17 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
         repeat task.wait() until canReload()
     end
     
+    -- 关键步骤：销毁头部导致斧头掉落
+    cooper.Character.Head:Destroy()
+    HONG:NOTIFY("复制斧头", "复制中...", 4)
+    
     -- 重新加载存档
     game:GetService("ReplicatedStorage").LoadSaveRequests.RequestLoad:InvokeServer(currentSlot, cooper)
     
     -- 确保角色加载完成
     repeat task.wait() until cooper.Character and cooper.Character:FindFirstChild("Head")
     
-    -- 关键步骤：销毁头部导致斧头掉落
-    cooper.Character.Head:Destroy()
-    HONG:NOTIFY("复制斧头", "复制中...请等待角色重生后拾取斧头", 4)
+    
 end
       
     function cooperAxeDupe()
