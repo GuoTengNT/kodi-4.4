@@ -70,22 +70,6 @@ getgenv().jjdkekd30y9 = "HUA Script"
         mod:Disconnect();
         mod = nil;
       end
-      if _CONFIGS["自动砍树"] then
-        _CONFIGS["自动砍树"]:Disconnect();
-        _CONFIGS["自动砍树"] = nil;
-      end
-      if DayOfNight then
-        DayOfNight:Disconnect()
-        DayOfNight = nil
-      end
-      if getgenv().PlankToBp then
-        getgenv().PlankToBp:Disconnect()
-        getgenv().PlankToBp = nil
-      end
-      if _CONFIGS["粉车器"] then
-        _CONFIGS["粉车器"]:Disconnect();
-        _CONFIGS["粉车器"] = nil;
-      end
     end
   end
   ClearConfig()
