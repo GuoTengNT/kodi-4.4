@@ -267,7 +267,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
     _warn('---------------')
     _warn('白名单玩家 : ' .. #whitelist_table .. ' 人')
     _warn('---------------')
-    _warn('脚本作者: 三岁高材生')
+    _warn('脚本作者: ')
     _warn('---------------')
 
     --<<  UI 部分, 不懂代码请勿修改 >>--
@@ -4794,7 +4794,7 @@ end
     end)
   else
     local plr = game:GetService("Players").LocalPlayer;
-    plr:Kick("没有白名单, 请加作者QQ购买白名单: \n3539186671");
+    plr:Kick("没有白名单, 请加作者QQ购买白名单: \n");
     while true do
     end
   end
