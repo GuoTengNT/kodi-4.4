@@ -4094,10 +4094,22 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
       table.insert(getgenv()["玩家们"], v.Name)
     end
 
+    function refreshPlayers()
+        getgenv()["玩家们"] = {}  -- 清空现有列表
+        for _, v in next, HONG.GS("Players"):GetPlayers() do
+            table.insert(getgenv()["玩家们"], v.Name)
+        end
+        HONG:NOTIFY("刷新玩家列表", "玩家列表已刷新", 2)  -- 显示刷新成功提示
+    end
+
     Page5:NewDropdown("选择玩家", "player_tp", getgenv()["玩家们"], function(plr)
       getgenv()["玩家们"] = plr;
     end)
-
+    
+    Page5:NewButton("刷新玩家列表。", function() 
+      refreshPlayers()
+    end)
+    
     Page5:NewButton("传送到玩家身边!", function() 
       if type(getgenv()["玩家们"]) == "table" then
         return HONG:NOTIFY("错误", "请先选择玩家", 4)
