@@ -255,8 +255,8 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
   if whitelisted == true then
     local plr = game:GetService("Players").LocalPlayer;
     game.StarterGui:SetCore('SendNotification', {
-      Title = '小go 已破解白名单', --> 单引号里面的中文可以改, 加载脚本时的通知
-      Text = '玩家 : ' .. plr.Name .. ' 哈哈哈哈🕊️🕊️🕊️'
+      Title = '已破解白名单', --> 单引号里面的中文可以改, 加载脚本时的通知
+      Text = '玩家 : ' .. plr.Name .. ' '
     })
     local _warn = warn;
 
@@ -4799,4 +4799,4 @@ end
     end
   end
 
-end)("小go 破解🕊️ | 伐木大亨2") --> 脚本名字, 双引号里面的中文可以改
+end)("GT2N2 | 伐木大亨2") --> 脚本名字, 双引号里面的中文可以改
