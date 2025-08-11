@@ -2104,7 +2104,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
 
     Page5:NewSeparator();
 
-    Page5:NewDropdown("木材地点", "wood_tp", ZTP, function(new)
+    Page5:NewDropdown("地点", "wood_tp", ZTP, function(new)
       WoodTP = new;
     end)
 
@@ -2114,10 +2114,10 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
         return
       end
       if WoodTP == "重生塔" then
-        HONG:TP(-1613, 623, 1082)
+        HONG:TP(-230, 200, 341)
       end
       if WoodTP == "地图" then
-        HONG:TP(3515, -195, 426)
+        HONG:TP(-115.828506, 65.4863434, 18.8461514)
       end
     end)
 
@@ -2236,4 +2236,4 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
     end
   end
 
-end)("GT2N2 | 伐木大亨2") --> 脚本名字, 双引号里面的中文可以改
+end)("GT2N2 | 自然灾害模拟器") --> 脚本名字, 双引号里面的中文可以改
