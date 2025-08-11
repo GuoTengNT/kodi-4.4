@@ -1749,7 +1749,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
       end
     end
 
-    Page2:NewSlider("悬浮高度", "悬浮slider", 0, 0, 300, false, function(v)
+    Page2:NewSlider("悬浮高度", "悬浮slider", 2, 0, 300, false, function(v)
       _CONFIGS["悬浮高度"] = v;
     end)
 
@@ -1822,11 +1822,14 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
     end)
 
     Page2:NewToggle("水上行走", "waterWalk", false, function(bool)
-      for i, v in next, HONG.WKSPC.Water:GetDescendants() do
-        if v:IsA("Part") then
-          v.CanCollide = bool;
-        end
-      end
+if bool == false then do game.Workspace.WaterLevel.CanCollide = false
+                            game.Workspace.WaterLevel.Size = Vector3.new(10, 1, 10)
+                        end
+                    end
+                    if bool == true then do game.Workspace.WaterLevel.CanCollide = true
+                            game.Workspace.WaterLevel.Size = Vector3.new(5000, 1, 5000)
+                        end
+                    end
     end)
     
     Page2:NewSeparator()
@@ -2206,7 +2209,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
       end
     end)
     
-    Page6:NewButton("盗取他人气球(提前是当前服务器有人拥有气球", function() 
+    Page6:NewButton("盗取他人气球(提前是当前服务器有人拥有气球)", function() 
 if game.Workspace:FindFirstChild("GreenBalloon", true) then -- Check for stealable GreenBalloon 
 	balloonClone = game.Workspace:FindFirstChild("GreenBalloon", true):Clone() -- clone it 
 	balloonClone.Parent = game:GetService("Players").LocalPlayer.Backpack
