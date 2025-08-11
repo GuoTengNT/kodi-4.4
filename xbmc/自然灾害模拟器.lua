@@ -26,7 +26,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
     ["飞行速度"] = 4,
     ["步行速度"] = 16,
     ["跳跃力"] = 50, --> 比如这个50  代表加载脚本初始的跳跃力是50, 可以改 100或者150等等
-    ["悬浮高度"] = 0,
+    ["悬浮高度"] = 2,
     ["重力"] = 198,
     ["相机焦距"] = 100,
     ["广角"] = 70,
@@ -1434,6 +1434,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
     local Page1 = library:CreateTab("设置菜单");
     local Page2 = library:CreateTab("玩家菜单");
     local Page5 = library:CreateTab("传送菜单");
+    local Page6 = library:CreateTab("其他菜单");
 
 
     Page1:NewToggle("防误触", "Mistouch", true, function(v)
@@ -1827,7 +1828,7 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
         end
       end
     end)
-
+    
     Page2:NewSeparator()
 
     Page2:NewSlider("相机焦距", "焦距slider", 2000, 100, 2000, false, function(v)
@@ -2140,17 +2141,6 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
       HONG:Teleport(HONG.GS("Players")[tostring(getgenv()["玩家们"])].Character.HumanoidRootPart.CFrame + Vector3.new(0, 5, 0))
     end)
 
-    Page5:NewButton("传送到玩家基地!", function() 
-      if type(getgenv()["玩家们"]) == "table" then
-        return HONG:NOTIFY("错误", "请先选择玩家", 4)
-      end
-
-      for i, v in next, HONG.WKSPC.Properties:GetChildren() do
-        if v:FindFirstChild("Owner") and v.Owner.Value == HONG.GS("Players")[tostring(getgenv()["玩家们"])] then
-          HONG:Teleport(v.OriginSquare.CFrame + Vector3.new(0, 5, 0))
-        end
-      end
-    end)
 
     Page5:NewToggle("查看玩家", "viewPlayer", false, function(state)
       if state then
@@ -2159,19 +2149,6 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
         end
         HONG:NOTIFY("正在观察", tostring(HONG.GS("Players")[tostring(getgenv()["玩家们"])].Name), 4)
         HONG.WKSPC.Camera.CameraSubject = HONG.GS("Players")[tostring(getgenv()["玩家们"])].Character
-      else
-        HONG.WKSPC.Camera.CameraSubject = HONG.LP.Character
-      end
-    end)
-
-    Page5:NewToggle("查看玩家基地", "viewPlayerBase", false, function(state)
-      if state then
-        for i, v in next, HONG.WKSPC.Properties:GetChildren() do
-          if v:FindFirstChild("Owner") and v.Owner.Value == HONG.GS("Players")[tostring(getgenv()["玩家们"])] then
-            HONG.WKSPC.Camera.CameraSubject = v.OriginSquare
-            HONG:NOTIFY("正在观察", tostring(HONG.GS("Players")[tostring(getgenv()["玩家们"])].Name.."的基地"), 4)
-          end
-        end 
       else
         HONG.WKSPC.Camera.CameraSubject = HONG.LP.Character
       end
@@ -2227,6 +2204,16 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
       if HONG.WKSPC:FindFirstChild("IIIII") then
         HONG:Teleport(HONG.WKSPC.IIIII.CFrame)
       end
+    end)
+    
+    Page6:NewButton("盗取他人气球(提前是当前服务器有人拥有气球", function() 
+if game.Workspace:FindFirstChild("GreenBalloon", true) then -- Check for stealable GreenBalloon 
+	balloonClone = game.Workspace:FindFirstChild("GreenBalloon", true):Clone() -- clone it 
+	balloonClone.Parent = game:GetService("Players").LocalPlayer.Backpack
+	HONG:NOTIFY("盗取气球", "气球盗取成功", 4) 
+else 
+    HONG:NOTIFY("盗取气球", "该服务器没有玩家拥有气球", 4) 
+end
     end)
 
   else
