@@ -1,9 +1,9 @@
-getgenv().jjdkekd30y9 = "HUA Script"
+getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
 (function(define)
   repeat
     game:GetService("RunService").Heartbeat:wait()
   until game:IsLoaded();
-  local function check_exploit()
+  local function check_exploit() --> 检查注入器配置, 如果注入器不行就不能加载脚本
     if not getgenv then
       return false;
     end
@@ -25,7 +25,7 @@ getgenv().jjdkekd30y9 = "HUA Script"
     ["传送模式"] = 2,
     ["飞行速度"] = 4,
     ["步行速度"] = 16,
-    ["跳跃力"] = 50,
+    ["跳跃力"] = 50, --> 比如这个50  代表加载脚本初始的跳跃力是50, 可以改 100或者150等等
     ["悬浮高度"] = 0,
     ["重力"] = 198,
     ["相机焦距"] = 100,
@@ -69,6 +69,14 @@ getgenv().jjdkekd30y9 = "HUA Script"
       if mod then
         mod:Disconnect();
         mod = nil;
+      end
+      if DayOfNight then
+        DayOfNight:Disconnect()
+        DayOfNight = nil
+      end
+      if getgenv().PlankToBp then
+        getgenv().PlankToBp:Disconnect()
+        getgenv().PlankToBp = nil
       end
     end
   end
@@ -222,7 +230,7 @@ getgenv().jjdkekd30y9 = "HUA Script"
     local plr = game:GetService("Players").LocalPlayer;
     game.StarterGui:SetCore('SendNotification', {
       Title = '通知', --> 单引号里面的中文可以改, 加载脚本时的通知
-      Text = '玩家 : ' .. plr.Name .. ' 脚本已开始运行'
+      Text = '玩家 : ' .. plr.Name .. ' '
     })
     local _warn = warn;
 
@@ -1425,7 +1433,7 @@ getgenv().jjdkekd30y9 = "HUA Script"
     --↓ 双引号里面的中文可以修改, 对应的是脚本UI的菜单名字
     local Page1 = library:CreateTab("设置菜单");
     local Page2 = library:CreateTab("玩家菜单");
-    local Page3 = library:CreateTab("传送菜单");
+    local Page5 = library:CreateTab("传送菜单");
 
 
     Page1:NewToggle("防误触", "Mistouch", true, function(v)
@@ -1489,9 +1497,15 @@ getgenv().jjdkekd30y9 = "HUA Script"
     Page1:NewSeparator()
 
 
+    Page1:NewButton("脚本源码作者", function()
+      print("感谢 ")
+    end)
+
+
     Page1:NewButton("Woof UI Library", function()
       print("感谢 Step")
     end)
+
 
     Page2:NewSlider("步行速度", "步行速度slider", 50, 16, 300, false, function(v)
       _CONFIGS["步行速度"] = v;
@@ -1776,6 +1790,7 @@ getgenv().jjdkekd30y9 = "HUA Script"
         return
       end
       HONG.LP.Character.Head:Destroy()
+      --> 如果卡在了正在购买, 可以通过自杀来解决
     end)
 
     Page2:NewButton("点击传送 [工具]", function()
@@ -1805,7 +1820,7 @@ getgenv().jjdkekd30y9 = "HUA Script"
       end
     end)
 
-        Page2:NewToggle("水上行走", "waterWalk", false, function(bool)
+    Page2:NewToggle("水上行走", "waterWalk", false, function(bool)
       for i, v in next, HONG.WKSPC.Water:GetDescendants() do
         if v:IsA("Part") then
           v.CanCollide = bool;
@@ -2064,52 +2079,49 @@ getgenv().jjdkekd30y9 = "HUA Script"
         coroutine.wrap(b)()
       end, ifError)
     end)
-    
-      local woodPart;
-      for _, v in next, wood:GetDescendants() do
-        if v.Name == "WoodSection" then
-          if v:FindFirstChild("ID") and v.ID.Value == 1 then
-            woodPart = v
-          end
-        end
+
+    local function newDragModel(model, cframe)
+      if not model.PrimaryPart then
+        model.PrimaryPart = model:FindFirstChildOfClass("Part")
       end
-      repeat
-        task.wait()
-        HONG:Teleport(woodPart.CFrame + Vector3.new(0, 3, 3));
-        cutTree({
-          Cutevent = wood.CutEvent;
-          Tool = getAxe(wood.TreeClass.Value);
-          Height = 0.3;
-        })
-      until wood:FindFirstChild("RootCut")
-      local Log
-      for s, b in next, HONG.WKSPC.LogModels:GetDescendants() do
-        if b:FindFirstChild"Owner" and b.Owner.Value == HONG.LP then
-          Log = b
-        end
-      end
-      task.wait(0.15)
-      task.spawn(function()
-        for cooper=1, 60 do
-          HONG.RES.Interaction.ClientIsDragging:FireServer(Log)
-          task.wait()
-        end
-      end)
-      task.wait(0.1)
-      Log.PrimaryPart = Log.WoodSection
-      for i=1, 60 do
-        Log.PrimaryPart.Velocity = Vector3.new(0, 0, 0)
-        Log:PivotTo(oldpos)
-        task.wait()
-      end
-      task.wait()
-      HONG.LP.Character.Head:Destroy()
-      HONG.LP.CharacterAdded:Wait()
-      task.wait(1.5)
-      HONG.LP.Character.HumanoidRootPart.CFrame = Log.WoodSection.CFrame
+      HONG.RES.Interaction.ClientIsDragging:FireServer(model)
+      model.PrimaryPart.Velocity = Vector3.new(0, 0, 0)
+      model:PivotTo(cframe)
+    end
+
+    local function getShopId(c, n, i)
+      return {
+        ["Character"] = c,
+        ["Name"] = n,
+        ["ID"] = tonumber(i)
+      }
+    end
+
+    local ZTP = {
+      "重生塔",
+      "地图"
+    }
+
+    Page5:NewSeparator();
+
+    Page5:NewDropdown("木材地点", "wood_tp", ZTP, function(new)
+      WoodTP = new;
     end)
 
-    Page3:NewSeparator();
+    Page5:NewButton("传送!", function()
+      if type(WoodTP) == "table" then
+        HONG:NOTIFY("错误!", "请先选择地点!", 4)
+        return
+      end
+      if WoodTP == "重生塔" then
+        HONG:TP(-1613, 623, 1082)
+      end
+      if WoodTP == "地图" then
+        HONG:TP(3515, -195, 426)
+      end
+    end)
+
+    Page5:NewSeparator();
 
     getgenv()["玩家们"] = {}
 
@@ -2117,24 +2129,49 @@ getgenv().jjdkekd30y9 = "HUA Script"
       table.insert(getgenv()["玩家们"], v.Name)
     end
 
-    Page3:NewDropdown("选择玩家", "player_tp", getgenv()["玩家们"], function(plr)
+    Page5:NewDropdown("选择玩家", "player_tp", getgenv()["玩家们"], function(plr)
       getgenv()["玩家们"] = plr;
     end)
 
-    Page3:NewButton("传送到玩家身边!", function() 
+    Page5:NewButton("传送到玩家身边!", function() 
       if type(getgenv()["玩家们"]) == "table" then
         return HONG:NOTIFY("错误", "请先选择玩家", 4)
       end
       HONG:Teleport(HONG.GS("Players")[tostring(getgenv()["玩家们"])].Character.HumanoidRootPart.CFrame + Vector3.new(0, 5, 0))
     end)
 
-    Page3:NewToggle("查看玩家", "viewPlayer", false, function(state)
+    Page5:NewButton("传送到玩家基地!", function() 
+      if type(getgenv()["玩家们"]) == "table" then
+        return HONG:NOTIFY("错误", "请先选择玩家", 4)
+      end
+
+      for i, v in next, HONG.WKSPC.Properties:GetChildren() do
+        if v:FindFirstChild("Owner") and v.Owner.Value == HONG.GS("Players")[tostring(getgenv()["玩家们"])] then
+          HONG:Teleport(v.OriginSquare.CFrame + Vector3.new(0, 5, 0))
+        end
+      end
+    end)
+
+    Page5:NewToggle("查看玩家", "viewPlayer", false, function(state)
       if state then
         if type(getgenv()["玩家们"]) == "table" then
           return HONG:NOTIFY("错误", "请先选择玩家", 4)
         end
         HONG:NOTIFY("正在观察", tostring(HONG.GS("Players")[tostring(getgenv()["玩家们"])].Name), 4)
         HONG.WKSPC.Camera.CameraSubject = HONG.GS("Players")[tostring(getgenv()["玩家们"])].Character
+      else
+        HONG.WKSPC.Camera.CameraSubject = HONG.LP.Character
+      end
+    end)
+
+    Page5:NewToggle("查看玩家基地", "viewPlayerBase", false, function(state)
+      if state then
+        for i, v in next, HONG.WKSPC.Properties:GetChildren() do
+          if v:FindFirstChild("Owner") and v.Owner.Value == HONG.GS("Players")[tostring(getgenv()["玩家们"])] then
+            HONG.WKSPC.Camera.CameraSubject = v.OriginSquare
+            HONG:NOTIFY("正在观察", tostring(HONG.GS("Players")[tostring(getgenv()["玩家们"])].Name.."的基地"), 4)
+          end
+        end 
       else
         HONG.WKSPC.Camera.CameraSubject = HONG.LP.Character
       end
@@ -2160,9 +2197,9 @@ getgenv().jjdkekd30y9 = "HUA Script"
       HONG:NOTIFY("玩家加入", ("%s加入了服务器"):format(player.Name), 4);
     end)
 
-    Page3:NewSeparator();
+    Page5:NewSeparator();
 
-    Page3:NewButton("设置位置!", function() 
+    Page5:NewButton("设置位置!", function() 
       if HONG.WKSPC:FindFirstChild("IIIII") then
         HONG.WKSPC.IIIII:Destroy()
       end
@@ -2180,13 +2217,13 @@ getgenv().jjdkekd30y9 = "HUA Script"
       posBox.Adornee = posBox.Parent
     end)
 
-    Page3:NewButton("删除位置!", function() 
+    Page5:NewButton("删除位置!", function() 
       if HONG.WKSPC:FindFirstChild("IIIII") then
         HONG.WKSPC.IIIII:Destroy()
       end
     end)
 
-    Page3:NewButton("传送!", function() 
+    Page5:NewButton("传送!", function() 
       if HONG.WKSPC:FindFirstChild("IIIII") then
         HONG:Teleport(HONG.WKSPC.IIIII.CFrame)
       end
@@ -2199,4 +2236,4 @@ getgenv().jjdkekd30y9 = "HUA Script"
     end
   end
 
-end)("GT2N2 | 自然灾害模拟器") --> 脚本名字, 双引号里面的中文可以改
+end)("GT2N2 | 伐木大亨2") --> 脚本名字, 双引号里面的中文可以改
