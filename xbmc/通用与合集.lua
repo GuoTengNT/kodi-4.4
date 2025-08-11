@@ -2162,6 +2162,40 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
         HONG:Teleport(HONG.WKSPC.IIIII.CFrame)
       end
     end)
+
+   Page4:NewButton("伐木大亨2", function()
+      if _CONFIGS["防误触开关"] == true then
+        HONG:SelectNotify("防误触", "确定要关闭当前页面并加载伐木大亨2脚本吗?", "确定", "取消", 5, function(text) --> 双引号里面的中文可以改
+          if text == "确定" then
+            xpcall(function()
+              for i, v in next, HONG.COREGUI:GetDescendants() do
+                if v.Name == _CONFIGS.UI_NAME then
+                  v:Destroy()
+                  ClearConfig()
+                end
+              end
+              loadstring(game:HttpGet("https://cdn.xiaolan.xin/https://raw.githubusercontent.com/GuoTengNT/kodi-4.4/refs/heads/master/xbmc/%E4%BC%90%E6%9C%A8%E5%A4%A7%E4%BA%A82.lua"))()
+            end, function(err)
+              return HONG:printf("错误是:  %s", err)
+            end)
+            return
+          end
+          HONG:NOTIFY("通知", "已取消", 4) --> 双引号里面的中文可以改
+        end)
+        return
+      end
+      xpcall(function()
+        for i, v in next, HONG.COREGUI:GetDescendants() do
+          if v.Name == _CONFIGS.UI_NAME then
+            v:Destroy()
+            ClearConfig()
+          end
+        end
+      end, function(err)
+        return HONG:printf("错误是:  %s", err)
+      end)
+    end)
+    
   else
     local plr = game:GetService("Players").LocalPlayer;
     plr:Kick("没有白名单, 请加作者QQ购买白名单: \n");
