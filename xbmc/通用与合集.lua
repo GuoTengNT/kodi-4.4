@@ -1472,6 +1472,39 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
         return HONG:printf("错误是:  %s", err)
       end)
     end)
+    
+    Page1:NewButton("强制退出服务器", function()
+      if _CONFIGS["防误触开关"] == true then
+        HONG:SelectNotify("防误触", "确定要退出服务器吗?", "确定", "取消", 5, function(text) --> 双引号里面的中文可以改
+          if text == "确定" then
+            xpcall(function()
+              for i, v in next, HONG.COREGUI:GetDescendants() do
+                if v.Name == _CONFIGS.UI_NAME then
+                  v:Destroy()
+                  ClearConfig()
+                end
+              end
+              plr:Kick("你已被踢出当前服务器");
+            end, function(err)
+              return HONG:printf("错误是:  %s", err)
+            end)
+            return
+          end
+          HONG:NOTIFY("通知", "已取消", 4) --> 双引号里面的中文可以改
+        end)
+        return
+      end
+      xpcall(function()
+        for i, v in next, HONG.COREGUI:GetDescendants() do
+          if v.Name == _CONFIGS.UI_NAME then
+            v:Destroy()
+            ClearConfig()
+          end
+        end
+      end, function(err)
+        return HONG:printf("错误是:  %s", err)
+      end)
+    end)
 
     Page1:NewButton("重进服务器", function()
       if _CONFIGS["防误触开关"] == true then
