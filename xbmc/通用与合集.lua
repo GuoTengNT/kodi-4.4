@@ -1540,11 +1540,11 @@ getgenv().jjdkekd30y9 = "HUA Script" --> 不要改, 改了会被踢
       print("感谢 Step")
     end)
 
-    Page2:NewSlider("步行速度", "步行速度slider", 50, 16, 300, false, function(v)
+    Page2:NewSlider("步行速度", "步行速度slider", 50, 16, 10000, false, function(v)
       _CONFIGS["步行速度"] = v;
     end)
 
-    Page2:NewSlider("跳跃力", "跳跃力slider", 50, 50, 300, false, function(v)
+    Page2:NewSlider("跳跃力", "跳跃力slider", 50, 50, 10000, false, function(v)
       _CONFIGS["跳跃力"] = v;
     end)
 
